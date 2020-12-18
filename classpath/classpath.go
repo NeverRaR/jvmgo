@@ -7,6 +7,7 @@ import "path/filepath"
 
 type Classpath struct {
 	bootClasspath Entry
+
 	extClasspath  Entry
 	userClasspath Entry
 }
@@ -50,7 +51,12 @@ func exists(path string) bool {
 
 func (receiver *Classpath) parseUserClasspath(cpOption string) {
 	if cpOption == "" {
-		cpOption = "."
+		if cp := os.Getenv("CLASS_PATH"); cp != "" {
+			cpOption = cp
+		}
+		if cpOption == "" {
+			cpOption = "."
+		}
 	}
 	receiver.userClasspath = newEntry(cpOption)
 }

@@ -14,11 +14,11 @@ func newDirEntry(path string) *DirEntry {
 	}
 	return &DirEntry{absDir}
 }
-func (dirEntry *DirEntry) readClass(className string) ([]byte, Entry, error) {
-	fileName := filepath.Join(dirEntry.absDir, className)
+func (receiver *DirEntry) readClass(className string) ([]byte, Entry, error) {
+	fileName := filepath.Join(receiver.absDir, className)
 	data, err := ioutil.ReadFile(fileName)
-	return data, dirEntry, err
+	return data, receiver, err
 }
-func (dirEntry *DirEntry) String() string {
-	return dirEntry.absDir
+func (receiver *DirEntry) String() string {
+	return receiver.absDir
 }

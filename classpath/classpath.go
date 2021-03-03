@@ -53,8 +53,7 @@ func (receiver *Classpath) parseUserClasspath(cpOption string) {
 	if cpOption == "" {
 		if cp := os.Getenv("CLASS_PATH"); cp != "" {
 			cpOption = cp
-		}
-		if cpOption == "" {
+		} else {
 			cpOption = "."
 		}
 	}

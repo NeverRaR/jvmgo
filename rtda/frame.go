@@ -8,8 +8,21 @@ type Frame struct {
 	nextPC       int // the next instruction after the call
 }
 
-func NewFrame(maxLocal, maxStack uint) *Frame {
+func (receiver *Frame) SetNextPC(nextPC int) {
+	receiver.nextPC = nextPC
+}
+
+func (receiver *Frame) NextPC() int {
+	return receiver.nextPC
+}
+
+func (receiver *Frame) Thread() *Thread {
+	return receiver.thread
+}
+
+func newFrame(thread *Thread, maxLocal, maxStack uint) *Frame {
 	return &Frame{
+		thread:       thread,
 		localVars:    newLocalVars(maxLocal),
 		operandStack: newOperandStack(maxStack),
 	}

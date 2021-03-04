@@ -8,6 +8,7 @@ type CodeAttribute struct {
 	exceptionTable []*ExceptionTableEntry
 	attributes     []AttributeInfo
 }
+
 type ExceptionTableEntry struct {
 	startPc   uint16
 	endPc     uint16
@@ -36,4 +37,16 @@ func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 		}
 	}
 	return exceptionTable
+}
+
+func (receiver *CodeAttribute) MaxLocals() uint {
+	return uint(receiver.maxLocals)
+}
+
+func (receiver *CodeAttribute) MaxStack() uint {
+	return uint(receiver.maxStack)
+}
+
+func (receiver *CodeAttribute) Code() []byte {
+	return receiver.code
 }

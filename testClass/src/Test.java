@@ -11,7 +11,11 @@ public class Test {
     public static final long LONG = 1123123122345678901L;
     public static final float PI = 3.14f;
     //public static final double E = 2.71828;
-    public static void main(String[] args)
-            throws RuntimeException { System.out.println("Hello, World!");
+    public static void main(String[] args) throws RuntimeException {
+        int sum = 0;
+        for (int i = 1; i <= 100; i++) {
+            sum += i;
+        }
+        System.out.println(sum);
     }
 }

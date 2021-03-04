@@ -8,7 +8,7 @@ import (
 	"jvmgo/rtda"
 )
 
-func interpreter(methodInfo *classfile.MemberInfo) {
+func interpret(methodInfo *classfile.MemberInfo) {
 	codeAttr := methodInfo.CodeAttribute()
 	maxLocals := codeAttr.MaxLocals()
 	maxStack := codeAttr.MaxStack()

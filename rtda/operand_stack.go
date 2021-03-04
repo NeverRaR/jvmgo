@@ -63,3 +63,11 @@ func (receiver *OperandStack) PopRef() *Object {
 	receiver.slots[receiver.size].ref = nil
 	return ref
 }
+func (receiver *OperandStack) PushSlot(slot Slot) {
+	receiver.slots[receiver.size] = slot
+	receiver.size++
+}
+func (receiver *OperandStack) PopSlot() Slot {
+	receiver.size--
+	return receiver.slots[receiver.size]
+}

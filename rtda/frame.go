@@ -4,6 +4,8 @@ type Frame struct {
 	lower        *Frame
 	localVars    LocalVars
 	operandStack *OperandStack
+	thread       *Thread
+	nextPC       int // the next instruction after the call
 }
 
 func NewFrame(maxLocal, maxStack uint) *Frame {

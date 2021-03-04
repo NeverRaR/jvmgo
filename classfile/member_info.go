@@ -34,3 +34,13 @@ func (receiver *MemberInfo) Name() string {
 func (receiver *MemberInfo) Descriptor() string {
 	return receiver.cp.getUtf8(receiver.descriptorIndex)
 }
+
+func (receiver *MemberInfo) CodeAttribute() *CodeAttribute {
+	for _, attrInfo := range receiver.attributes {
+		switch attrInfo.(type) {
+		case *CodeAttribute:
+			return attrInfo.(*CodeAttribute)
+		}
+	}
+	return nil
+}

@@ -3,22 +3,22 @@ package base
 import "jvmgo/rtda"
 
 type Instruction interface {
-	FetchOperation(reader *BytecodeReader)
+	FetchOperands(reader *BytecodeReader)
 	Execute(frame *rtda.Frame)
 }
 
 type NoOperandsInstruction struct{}
 
-func (receiver *NoOperandsInstruction) FetchOperation(reader *BytecodeReader) {
+func (receiver *NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
 	//nothing to do
 }
 
 type BranchInstruction struct {
-	offset int
+	Offset int
 }
 
-func (receiver *BranchInstruction) FetchOperand(reader *BytecodeReader) {
-	receiver.offset = int(reader.ReadInt16())
+func (receiver *BranchInstruction) FetchOperands(reader *BytecodeReader) {
+	receiver.Offset = int(reader.ReadInt16())
 }
 
 type Index8Instruction struct {

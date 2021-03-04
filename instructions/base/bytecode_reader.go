@@ -33,3 +33,17 @@ func (receiver *BytecodeReader) ReadInt32() int32 {
 	byte4 := int32(receiver.ReadUint8())
 	return (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4
 }
+
+func (receiver *BytecodeReader) SkipPadding() {
+	for receiver.pc%4 != 0 {
+		receiver.ReadUint8()
+	}
+}
+
+func (receiver *BytecodeReader) ReadInt32s(n int32) []int32 {
+	ints := make([]int32, n)
+	for i := range ints {
+		ints[i] = receiver.ReadInt32()
+	}
+	return ints
+}

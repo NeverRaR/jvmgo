@@ -11,7 +11,7 @@ type SIPUSH struct {
 	val int16
 }
 
-func (receiver *BIPUSH) FetchOperation(reader *base.BytecodeReader) {
+func (receiver *BIPUSH) FetchOperands(reader *base.BytecodeReader) {
 	receiver.val = reader.ReadInt8()
 }
 
@@ -20,7 +20,7 @@ func (receiver *BIPUSH) Execute(frame *rtda.Frame) {
 	frame.OperandStack().PushInt(i)
 }
 
-func (receiver *SIPUSH) FetchOperation(reader *base.BytecodeReader) {
+func (receiver *SIPUSH) FetchOperands(reader *base.BytecodeReader) {
 	receiver.val = reader.ReadInt16()
 }
 

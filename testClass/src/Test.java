@@ -10,12 +10,24 @@ public class Test {
     public static final int INT = 123456789;
     public static final long LONG = 1123123122345678901L;
     public static final float PI = 3.14f;
-    //public static final double E = 2.71828;
+
+    public static int staticVar;
+    public int instanceVar;
+
     public static void main(String[] args) throws RuntimeException {
-        int sum = 0;
-        for (int i = 1; i <= 100; i++) {
-            sum += i;
+        int x = 32768; // ldc
+        Test myObj = new Test(); // new
+        Test.staticVar = x; // putstatic
+        x = Test.staticVar; // getstatic
+        myObj.instanceVar = x; // putfield
+        x = myObj.instanceVar; // getfield
+        Object obj = myObj;
+        if (obj instanceof Test) { // instanceof
+            myObj = (Test) obj; // checkcast
+            System.out.println(myObj.instanceVar);
         }
-        System.out.println(sum);
+    }
+    public void hello(){
+        int i=100;
     }
 }

@@ -8,6 +8,10 @@ type MemberInfo struct {
 	attributes      []AttributeInfo
 }
 
+func (receiver *MemberInfo) AccessFlags() uint16 {
+	return receiver.accessFlags
+}
+
 func readMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
 	memberCount := reader.readUint16()
 	members := make([]*MemberInfo, memberCount)
@@ -40,6 +44,16 @@ func (receiver *MemberInfo) CodeAttribute() *CodeAttribute {
 		switch attrInfo.(type) {
 		case *CodeAttribute:
 			return attrInfo.(*CodeAttribute)
+		}
+	}
+	return nil
+}
+
+func (receiver *MemberInfo) ConstantValueAttribute() *ConstantValueAttribute {
+	for _, attrInfo := range receiver.attributes {
+		switch attrInfo.(type) {
+		case *ConstantValueAttribute:
+			return attrInfo.(*ConstantValueAttribute)
 		}
 	}
 	return nil

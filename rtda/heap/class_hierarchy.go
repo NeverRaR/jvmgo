@@ -1,6 +1,6 @@
 package heap
 
-func (receiver *Class) isAssignableFrom(other *Class) bool {
+func (receiver *Class) IsAssignableFrom(other *Class) bool {
 	s, t := other, receiver
 
 	if s == t {
@@ -8,14 +8,14 @@ func (receiver *Class) isAssignableFrom(other *Class) bool {
 	}
 
 	if !t.IsInterface() {
-		return s.isSubClassOf(t)
+		return s.IsSubClassOf(t)
 	} else {
-		return s.isImplements(t)
+		return s.IsImplements(t)
 	}
 }
 
 // receiver extends c
-func (receiver *Class) isSubClassOf(other *Class) bool {
+func (receiver *Class) IsSubClassOf(other *Class) bool {
 	for c := receiver.superClass; c != nil; c = c.superClass {
 		if c == other {
 			return true
@@ -25,10 +25,10 @@ func (receiver *Class) isSubClassOf(other *Class) bool {
 }
 
 // receiver implements iface
-func (receiver *Class) isImplements(iface *Class) bool {
+func (receiver *Class) IsImplements(iface *Class) bool {
 	for c := receiver; c != nil; c = c.superClass {
 		for _, i := range c.interfaces {
-			if i == iface || i.isSubInterfaceOf(iface) {
+			if i == iface || i.IsSubInterfaceOf(iface) {
 				return true
 			}
 		}
@@ -37,11 +37,16 @@ func (receiver *Class) isImplements(iface *Class) bool {
 }
 
 // receiver extends iface
-func (receiver *Class) isSubInterfaceOf(iface *Class) bool {
+func (receiver *Class) IsSubInterfaceOf(iface *Class) bool {
 	for _, superInterface := range receiver.interfaces {
-		if superInterface == iface || superInterface.isSubInterfaceOf(iface) {
+		if superInterface == iface || superInterface.IsSubInterfaceOf(iface) {
 			return true
 		}
 	}
 	return false
+}
+
+// c extends receiver
+func (receiver *Class) IsSuperClassOf(other *Class) bool {
+	return other.IsSubClassOf(receiver)
 }

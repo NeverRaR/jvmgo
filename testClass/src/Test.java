@@ -11,23 +11,17 @@ public class Test {
     public static final long LONG = 1123123122345678901L;
     public static final float PI = 3.14f;
 
-    public static int staticVar;
+    public static int staticVar=100;
     public int instanceVar;
 
-    public static void main(String[] args) throws RuntimeException {
-        int x = 32768; // ldc
-        Test myObj = new Test(); // new
-        Test.staticVar = x; // putstatic
-        x = Test.staticVar; // getstatic
-        myObj.instanceVar = x; // putfield
-        x = myObj.instanceVar; // getfield
-        Object obj = myObj;
-        if (obj instanceof Test) { // instanceof
-            myObj = (Test) obj; // checkcast
-            System.out.println(myObj.instanceVar);
-        }
+    public static void main(String[] args) {
+        long x = fibonacci(30);
+        System.out.println(x);
     }
-    public void hello(){
-        int i=100;
+    private static long fibonacci(long n) {
+        if (n <= 1) {
+            return n;
+        }
+        return fibonacci(n - 1) + fibonacci(n - 2);
     }
 }

@@ -43,3 +43,7 @@ func (receiver *Frame) Method() *heap.Method {
 func (receiver *Frame) OperandStack() *OperandStack {
 	return receiver.operandStack
 }
+
+func (receiver *Frame) RevertNextPC() {
+	receiver.nextPC = receiver.thread.pc
+}

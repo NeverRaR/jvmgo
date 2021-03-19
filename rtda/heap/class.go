@@ -79,12 +79,20 @@ func (receiver *Class) StaticVars() Slots {
 	return receiver.staticVars
 }
 
-func (receiver *Class) isAccessibleTo(other *Class) bool {
-	return receiver.IsPublic() ||
-		receiver.getPackageName() == other.getPackageName()
+func (receiver *Class) InitStarted() bool {
+	return receiver.initStarted
 }
 
-func (receiver *Class) getPackageName() string {
+func (receiver *Class) StartInit() {
+	receiver.initStarted = true
+}
+
+func (receiver *Class) isAccessibleTo(other *Class) bool {
+	return receiver.IsPublic() ||
+		receiver.GetPackageName() == other.GetPackageName()
+}
+
+func (receiver *Class) GetPackageName() string {
 	if i := strings.LastIndex(receiver.name, "/"); i >= 0 {
 		return receiver.name[:i]
 	}
@@ -106,4 +114,8 @@ func (receiver *Class) getStaticMethod(name, descriptor string) *Method {
 		}
 	}
 	return nil
+}
+
+func (receiver *Class) GetClinitMethod() *Method {
+	return receiver.getStaticMethod("<clinit>", "()V")
 }

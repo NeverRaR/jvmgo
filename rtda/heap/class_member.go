@@ -41,11 +41,11 @@ func (receiver *ClassMember) isAccessibleTo(d *Class) bool {
 	}
 	c := receiver.class
 	if receiver.IsProtected() {
-		return d == c || d.isSubClassOf(c) ||
-			c.getPackageName() == d.getPackageName()
+		return d == c || d.IsSubClassOf(c) ||
+			c.GetPackageName() == d.GetPackageName()
 	}
 	if !receiver.IsPrivate() {
-		return c.getPackageName() == d.getPackageName()
+		return c.GetPackageName() == d.GetPackageName()
 	}
 	return d == c
 }

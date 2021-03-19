@@ -74,3 +74,7 @@ func (receiver *OperandStack) PopSlot() Slot {
 	receiver.size--
 	return receiver.slots[receiver.size]
 }
+
+func (receiver *OperandStack) GetRefFromTop(n uint) *heap.Object {
+	return receiver.slots[receiver.size-1-n].ref
+}

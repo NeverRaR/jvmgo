@@ -50,3 +50,7 @@ func (receiver LocalVars) SetRef(index uint, ref *heap.Object) {
 func (receiver LocalVars) GetRef(index uint) *heap.Object {
 	return receiver[index].ref
 }
+
+func (receiver LocalVars) SetSlot(index uint, slot Slot) {
+	receiver[index] = slot
+}

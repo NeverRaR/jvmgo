@@ -39,3 +39,7 @@ func (receiver *Stack) top() *Frame {
 	}
 	return receiver._top
 }
+
+func (receiver *Stack) isEmpty() bool {
+	return receiver._top == nil
+}

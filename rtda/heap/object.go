@@ -20,6 +20,12 @@ func newObject(class *Class) *Object {
 	}
 }
 
+func (receiver *Object) GetRefVar(name, descriptor string) *Object {
+	field := receiver.class.getField(name, descriptor, false)
+	slots := receiver.data.(Slots)
+	return slots.GetRef(field.slotId)
+}
+
 func (receiver *Object) IsInstanceOf(class *Class) bool {
 	return class.IsAssignableFrom(receiver.class)
 }

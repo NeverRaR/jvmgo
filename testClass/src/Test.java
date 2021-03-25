@@ -7,6 +7,7 @@ public class Test {
         int[] arr = {22, 84, 77, 11, 95, 9, 78, 56, 36, 97, 65, 36, 10, 24, 92};
         bubbleSort(arr);
         printArray(arr);
+        System.out.println("zzsb");
     }
     private static void bubbleSort(int[] arr) {
         boolean swapped = true;

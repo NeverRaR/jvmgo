@@ -24,6 +24,9 @@ func (receiver *ClassLoader) LoadClass(name string) *Class {
 	if class, ok := receiver.classMap[name]; ok {
 		return class
 	}
+	if name[0] == '[' {
+		return receiver.loadArrayClass(name)
+	}
 	return receiver.loadNonArrayClass(name)
 }
 
@@ -34,6 +37,22 @@ func (receiver *ClassLoader) loadNonArrayClass(name string) *Class {
 	if receiver.verboseFlag {
 		fmt.Printf("[Loaded %s from %s]\n", name, entry)
 	}
+	return class
+}
+
+func (receiver *ClassLoader) loadArrayClass(name string) *Class {
+	class := &Class{
+		accessFlags: ACC_PUBLIC, //todo
+		name:        name,
+		loader:      receiver,
+		initStarted: true,
+		superClass:  receiver.LoadClass("java/lang/Object"),
+		interfaces: []*Class{
+			receiver.LoadClass("java/lang/Cloneable"),
+			receiver.LoadClass("java/io/Serializable"),
+		},
+	}
+	receiver.classMap[name] = class
 	return class
 }
 

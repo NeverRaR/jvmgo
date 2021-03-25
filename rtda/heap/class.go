@@ -128,3 +128,13 @@ func (receiver *Class) ArrayClass() *Class {
 	arrayClassName := getArrayClassName(receiver.name)
 	return receiver.loader.LoadClass(arrayClassName)
 }
+
+func (receiver *Class) isJlObject() bool {
+	return receiver.name == "java/lang/Object"
+}
+func (receiver *Class) isJlCloneable() bool {
+	return receiver.name == "java/lang/Cloneable"
+}
+func (receiver *Class) isJioSerializable() bool {
+	return receiver.name == "java/io/Serializable"
+}

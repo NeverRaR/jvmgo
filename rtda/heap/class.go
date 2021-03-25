@@ -22,6 +22,10 @@ type Class struct {
 	initStarted       bool
 }
 
+func (receiver *Class) Loader() *ClassLoader {
+	return receiver.loader
+}
+
 func newClass(cf *classfile.ClassFile) *Class {
 	class := &Class{}
 	class.accessFlags = cf.AccessFlags()
@@ -118,4 +122,9 @@ func (receiver *Class) getStaticMethod(name, descriptor string) *Method {
 
 func (receiver *Class) GetClinitMethod() *Method {
 	return receiver.getStaticMethod("<clinit>", "()V")
+}
+
+func (receiver *Class) ArrayClass() *Class {
+	arrayClassName := getArrayClassName(receiver.name)
+	return receiver.loader.LoadClass(arrayClassName)
 }

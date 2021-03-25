@@ -3,25 +3,30 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Test {
 
-    public static final boolean FLAG = true;
-    public static final byte BYTE = 123;
-    public static final char X = 'X';
-    public static final short SHORT = 12345;
-    public static final int INT = 123456789;
-    public static final long LONG = 1123123122345678901L;
-    public static final float PI = 3.14f;
-
-    public static int staticVar=100;
-    public int instanceVar;
-
     public static void main(String[] args) {
-        long x = fibonacci(30);
-        System.out.println(x);
+        int[] arr = {22, 84, 77, 11, 95, 9, 78, 56, 36, 97, 65, 36, 10, 24, 92};
+        bubbleSort(arr);
+        printArray(arr);
     }
-    private static long fibonacci(long n) {
-        if (n <= 1) {
-            return n;
+    private static void bubbleSort(int[] arr) {
+        boolean swapped = true;
+        int j = 0; int tmp;
+        while (swapped) {
+            swapped = false;
+            j++; for (int i = 0; i < arr.length - j; i++) {
+                if (arr[i] > arr[i + 1]) {
+                    tmp = arr[i];
+                    arr[i] = arr[i + 1];
+                    arr[i + 1] = tmp;
+                    swapped = true;
+                }
+            }
         }
-        return fibonacci(n - 1) + fibonacci(n - 2);
+
+    }
+    private static void printArray(int[] arr) {
+        for (int i : arr) {
+            System.out.println(i);
+        }
     }
 }

@@ -13,21 +13,59 @@ type ClassLoader struct {
 }
 
 func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
-	return &ClassLoader{
+	loader := &ClassLoader{
 		cp:          cp,
 		verboseFlag: verboseFlag,
 		classMap:    make(map[string]*Class),
 	}
+	loader.loadBasicClasses()
+	loader.loadPrimitiveClasses()
+	return loader
+}
+
+func (receiver *ClassLoader) loadBasicClasses() {
+	jlClassClass := receiver.LoadClass("java/lang/Class")
+	for _, class := range receiver.classMap {
+		if class.jClass == nil {
+			class.jClass = jlClassClass.NewObject()
+			class.jClass.extra = class
+		}
+	}
+}
+
+func (receiver *ClassLoader) loadPrimitiveClasses() {
+	for primitiveType, _ := range primitiveTypes {
+		receiver.loadPrimitiveClass(primitiveType)
+	}
+}
+
+func (receiver *ClassLoader) loadPrimitiveClass(className string) {
+	class := &Class{
+		accessFlags: ACC_PUBLIC, // todo
+		name:        className,
+		loader:      receiver,
+		initStarted: true,
+	}
+	class.jClass = receiver.classMap["java/lang/Class"].NewObject()
+	class.jClass.extra = class
+	receiver.classMap[className] = class
 }
 
 func (receiver *ClassLoader) LoadClass(name string) *Class {
 	if class, ok := receiver.classMap[name]; ok {
 		return class
 	}
+	var class *Class
 	if name[0] == '[' {
-		return receiver.loadArrayClass(name)
+		class = receiver.loadArrayClass(name)
+	} else {
+		class = receiver.loadNonArrayClass(name)
 	}
-	return receiver.loadNonArrayClass(name)
+	if jlClass, ok := receiver.classMap["java/lang/Class"]; ok {
+		class.jClass = jlClass.NewObject()
+		class.jClass.extra = class
+	}
+	return class
 }
 
 func (receiver *ClassLoader) loadNonArrayClass(name string) *Class {

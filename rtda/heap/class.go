@@ -20,6 +20,11 @@ type Class struct {
 	staticSlotCount   uint
 	staticVars        Slots
 	initStarted       bool
+	jClass            *Object
+}
+
+func (receiver *Class) JClass() *Object {
+	return receiver.jClass
 }
 
 func (receiver *Class) Loader() *ClassLoader {

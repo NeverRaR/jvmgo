@@ -6,6 +6,8 @@ import (
 	"jvmgo/rtda"
 )
 
+import _ "jvmgo/native/java/lang"
+
 type INVOKE_NATIVE struct {
 	base.NoOperandsInstruction
 }

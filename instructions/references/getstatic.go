@@ -19,6 +19,11 @@ func (receiver *GET_STATIC) Execute(frame *rtda.Frame) {
 	if !field.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
+	if !class.InitStarted() {
+		frame.RevertNextPC()
+		base.InitClass(frame.Thread(), class)
+		return
+	}
 	descriptor := field.Descriptor()
 	slotId := field.SlotId()
 	slots := class.StaticVars()

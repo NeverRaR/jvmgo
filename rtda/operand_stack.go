@@ -78,3 +78,14 @@ func (receiver *OperandStack) PopSlot() Slot {
 func (receiver *OperandStack) GetRefFromTop(n uint) *heap.Object {
 	return receiver.slots[receiver.size-1-n].ref
 }
+
+func (receiver *OperandStack) PushBoolean(val bool) {
+	if val {
+		receiver.PushInt(1)
+	} else {
+		receiver.PushInt(0)
+	}
+}
+func (receiver *OperandStack) PopBoolean() bool {
+	return receiver.PopInt() == 1
+}

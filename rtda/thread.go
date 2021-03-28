@@ -29,6 +29,10 @@ func (receiver *Thread) CurrentFrame() *Frame {
 	return receiver.stack.top()
 }
 
+func (receiver *Thread) GetFrames() []*Frame {
+	return receiver.stack.getFrames()
+}
+
 func (receiver *Thread) TopFrame() *Frame {
 	return receiver.stack.top()
 }

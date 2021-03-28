@@ -48,7 +48,7 @@ func newMethod(class *Class, cfMethod *classfile.MemberInfo) *Method {
 }
 
 func (receiver *Method) injectCodeAttribute(returnType string) {
-	receiver.maxStack = 4
+	receiver.maxStack = 10
 	receiver.maxLocal = receiver.argSlotCount
 	switch returnType[0] {
 	case 'V':

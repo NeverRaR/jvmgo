@@ -43,3 +43,11 @@ func (receiver *Stack) top() *Frame {
 func (receiver *Stack) isEmpty() bool {
 	return receiver._top == nil
 }
+
+func (receiver *Stack) getFrames() []*Frame {
+	frames := make([]*Frame, 0, receiver.size)
+	for frame := receiver._top; frame != nil; frame = frame.lower {
+		frames = append(frames, frame)
+	}
+	return frames
+}

@@ -27,7 +27,14 @@ func initialize(frame *rtda.Frame) {
 
 	systemClass := vmClass.Loader().LoadClass("java/lang/System")
 	setOut0Method := systemClass.GetStaticMethod("setOut0", "(Ljava/io/PrintStream;)V")
-	fileOutputStreamClass := systemClass.Loader().LoadClass("java/io/PrintStream")
-	frame.OperandStack().PushRef(fileOutputStreamClass.NewObject())
-	base.InvokeMethod(frame, setOut0Method)
+	newPrintStreamMethod := systemClass.GetStaticMethod("newPrintStream",
+		"(Ljava/io/FileOutputStream;Ljava/lang/String;)Ljava/io/PrintStream;")
+	fileOutputStreamClass := systemClass.Loader().LoadClass("java/io/FileOutputStream")
+	thread := frame.Thread()
+	newFrame := thread.NewFrame(setOut0Method)
+	thread.PushFrame(newFrame)
+	newFrame.OperandStack().PushRef(fileOutputStreamClass.NewObject())
+	newFrame.OperandStack().PushRef(nil)
+	base.InvokeMethod(newFrame, newPrintStreamMethod)
+
 }

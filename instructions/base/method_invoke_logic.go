@@ -5,7 +5,7 @@ import (
 	"jvmgo/rtda/heap"
 )
 
-func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
+func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) *rtda.Frame {
 	thread := invokerFrame.Thread()
 	newFrame := thread.NewFrame(method)
 	thread.PushFrame(newFrame)
@@ -17,5 +17,5 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 			newFrame.LocalVars().SetSlot(uint(i), slot)
 		}
 	}
-
+	return newFrame
 }

@@ -44,3 +44,13 @@ func (receiver *Object) SetRefVar(name, descriptor string, ref *Object) {
 	slots := receiver.Fields()
 	slots.SetRef(field.slotId, ref)
 }
+func (receiver *Object) SetIntVar(name, descriptor string, val int32) {
+	field := receiver.class.getField(name, descriptor, false)
+	slots := receiver.data.(Slots)
+	slots.SetInt(field.slotId, val)
+}
+func (receiver *Object) GetIntVar(name, descriptor string) int32 {
+	field := receiver.class.getField(name, descriptor, false)
+	slots := receiver.data.(Slots)
+	return slots.GetInt(field.slotId)
+}

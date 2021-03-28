@@ -23,6 +23,14 @@ type Class struct {
 	jClass            *Object
 }
 
+func (receiver *Class) Interfaces() []*Class {
+	return receiver.interfaces
+}
+
+func (receiver *Class) AccessFlags() uint16 {
+	return receiver.accessFlags
+}
+
 func (receiver *Class) JClass() *Object {
 	return receiver.jClass
 }

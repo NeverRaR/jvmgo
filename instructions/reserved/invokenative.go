@@ -8,6 +8,8 @@ import (
 
 import _ "jvmgo/native/java/lang"
 import _ "jvmgo/native/sun/misc"
+import _ "jvmgo/native/sun/reflect"
+import _ "jvmgo/native/java/security"
 
 type INVOKE_NATIVE struct {
 	base.NoOperandsInstruction

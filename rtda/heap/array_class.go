@@ -34,3 +34,7 @@ func (receiver *Class) NewArray(count uint) *Object {
 		return &Object{receiver, make([]*Object, count), nil}
 	}
 }
+
+func NewByteArray(loader *ClassLoader, bytes []int8) *Object {
+	return &Object{loader.LoadClass("[B"), bytes, nil}
+}

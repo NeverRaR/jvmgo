@@ -20,9 +20,7 @@ func (receiver *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 	}
 
 	ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1)
-	if methodRef.Name() == "println" {
-		print("invoke println!\n")
-	}
+
 	if ref == nil {
 		// hack!
 		//if methodRef.Name() == "println" {
@@ -33,6 +31,10 @@ func (receiver *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 		panic("java.lang.NullPointerException")
 	}
 
+	if methodRef.Name() == "println" {
+		_println(frame.OperandStack(), methodRef.Descriptor())
+		return
+	}
 	if resolvedMethod.IsProtected() &&
 		resolvedMethod.Class().IsSuperClassOf(currentClass) &&
 		resolvedMethod.Class().GetPackageName() != currentClass.GetPackageName() &&

@@ -105,3 +105,6 @@ func (receiver *Method) IsAbstract() bool {
 func (receiver *Method) IsStrict() bool {
 	return 0 != receiver.accessFlags&ACC_STRICT
 }
+func (receiver *Method) isConstructor() bool {
+	return !receiver.IsStatic() && receiver.name == "<init>"
+}

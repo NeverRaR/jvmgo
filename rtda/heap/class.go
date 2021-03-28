@@ -198,3 +198,32 @@ func (receiver *Class) SetRefVar(fieldName, fieldDescriptor string, ref *Object)
 	field := receiver.getField(fieldName, fieldDescriptor, true)
 	receiver.staticVars.SetRef(field.slotId, ref)
 }
+
+func (receiver *Class) GetFields(publicOnly bool) []*Field {
+	if publicOnly {
+		publicFields := make([]*Field, 0, len(receiver.fields))
+		for _, field := range receiver.fields {
+			if field.IsPublic() {
+				publicFields = append(publicFields, field)
+			}
+		}
+		return publicFields
+	} else {
+		return receiver.fields
+	}
+}
+func (receiver *Class) GetConstructor(descriptor string) *Method {
+	return receiver.GetInstanceMethod("<init>", descriptor)
+}
+
+func (receiver *Class) GetConstructors(publicOnly bool) []*Method {
+	constructors := make([]*Method, 0, len(receiver.methods))
+	for _, method := range receiver.methods {
+		if method.isConstructor() {
+			if !publicOnly || method.IsPublic() {
+				constructors = append(constructors, method)
+			}
+		}
+	}
+	return constructors
+}

@@ -3,10 +3,24 @@ package heap
 import "jvmgo/classfile"
 
 type ClassMember struct {
-	accessFlags uint16
-	name        string
-	descriptor  string
-	class       *Class
+	accessFlags    uint16
+	name           string
+	descriptor     string
+	signature      string
+	annotationData []byte // RuntimeVisibleAnnotations_attribute
+	class          *Class
+}
+
+func (receiver *ClassMember) AnnotationData() []byte {
+	return receiver.annotationData
+}
+
+func (receiver *ClassMember) Signature() string {
+	return receiver.signature
+}
+
+func (receiver *ClassMember) AccessFlags() uint16 {
+	return receiver.accessFlags
 }
 
 func (receiver *ClassMember) copyMemberInfo(memberInfo *classfile.MemberInfo) {

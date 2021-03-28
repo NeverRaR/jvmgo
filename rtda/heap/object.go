@@ -54,3 +54,7 @@ func (receiver *Object) GetIntVar(name, descriptor string) int32 {
 	slots := receiver.data.(Slots)
 	return slots.GetInt(field.slotId)
 }
+
+func (receiver *Object) SetExtra(extra interface{}) {
+	receiver.extra = extra
+}

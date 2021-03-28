@@ -89,3 +89,7 @@ func (receiver *OperandStack) PushBoolean(val bool) {
 func (receiver *OperandStack) PopBoolean() bool {
 	return receiver.PopInt() == 1
 }
+
+func NewOperandStack(maxStack uint) *OperandStack {
+	return newOperandStack(maxStack)
+}

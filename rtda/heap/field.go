@@ -44,3 +44,9 @@ func (receiver *Field) SlotId() uint {
 func (receiver *Field) isLongOrDouble() bool {
 	return receiver.descriptor == "J" || receiver.descriptor == "D"
 }
+
+// reflection
+func (receiver *Field) Type() *Class {
+	className := toClassName(receiver.descriptor)
+	return receiver.class.loader.LoadClass(className)
+}

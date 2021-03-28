@@ -113,10 +113,10 @@ func (receiver *Class) NewObject() *Object {
 }
 
 func (receiver *Class) GetMainMethod() *Method {
-	return receiver.getStaticMethod("main", "([Ljava/lang/String;)V")
+	return receiver.GetStaticMethod("main", "([Ljava/lang/String;)V")
 }
 
-func (receiver *Class) getStaticMethod(name, descriptor string) *Method {
+func (receiver *Class) GetStaticMethod(name, descriptor string) *Method {
 	for _, method := range receiver.methods {
 		if method.IsStatic() && method.name == name && descriptor == method.descriptor {
 			return method
@@ -126,7 +126,7 @@ func (receiver *Class) getStaticMethod(name, descriptor string) *Method {
 }
 
 func (receiver *Class) GetClinitMethod() *Method {
-	return receiver.getStaticMethod("<clinit>", "()V")
+	return receiver.GetStaticMethod("<clinit>", "()V")
 }
 
 func (receiver *Class) ArrayClass() *Class {

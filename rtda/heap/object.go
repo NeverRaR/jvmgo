@@ -6,6 +6,10 @@ type Object struct {
 	extra interface{}
 }
 
+func (receiver *Object) Data() interface{} {
+	return receiver.data
+}
+
 func (receiver *Object) Extra() interface{} {
 	return receiver.extra
 }

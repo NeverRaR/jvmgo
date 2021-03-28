@@ -1,6 +1,9 @@
 package native
 
-import "jvmgo/rtda"
+import (
+	"jvmgo/instructions/base"
+	"jvmgo/rtda"
+)
 
 type NativeMethod func(frame *rtda.Frame)
 
@@ -17,11 +20,23 @@ func FindNativeMethod(className, methodName, methodDescriptor string) NativeMeth
 		return method
 	}
 	if methodDescriptor == "()V" && methodName == "registerNatives" {
-		return emptyNativeMethod
+		if className == "java/lang/System" {
+			return initSystem
+		} else {
+			return emptyNativeMethod
+		}
 	}
 	return nil
 }
 
 func emptyNativeMethod(frame *rtda.Frame) {
-	// do nothing
+
+}
+
+func initSystem(frame *rtda.Frame) {
+	systemClass := frame.Method().Class()
+	setOut0Method := systemClass.GetStaticMethod("setOut0", "(Ljava/io/PrintStream;)V")
+	fileOutputStreamClass := systemClass.Loader().LoadClass("java/io/FileOutputStream")
+	frame.OperandStack().PushRef(fileOutputStreamClass.NewObject())
+	base.InvokeMethod(frame, setOut0Method)
 }

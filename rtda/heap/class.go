@@ -144,6 +144,11 @@ func (receiver *Class) isJioSerializable() bool {
 	return receiver.name == "java/io/Serializable"
 }
 
+func (receiver *Class) IsPrimitive() bool {
+	_, ok := primitiveTypes[receiver.name]
+	return ok
+}
+
 func (receiver *Class) getField(name, descriptor string, isStatic bool) *Field {
 	for c := receiver; c != nil; c = c.superClass {
 		for _, field := range c.fields {

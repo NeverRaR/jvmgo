@@ -160,6 +160,33 @@ func (receiver *Class) getField(name, descriptor string, isStatic bool) *Field {
 	return nil
 }
 
+func (receiver *Class) getMethod(name, descriptor string, isStatic bool) *Method {
+	for c := receiver; c != nil; c = c.superClass {
+		for _, method := range c.methods {
+			if method.IsStatic() == isStatic &&
+				method.name == name &&
+				method.descriptor == descriptor {
+
+				return method
+			}
+		}
+	}
+	return nil
+}
+
 func (receiver *Class) JavaName() string {
 	return strings.Replace(receiver.name, "/", ".", -1)
+}
+
+func (receiver *Class) GetInstanceMethod(name, descriptor string) *Method {
+	return receiver.getMethod(name, descriptor, false)
+}
+
+func (receiver *Class) GetRefVar(fieldName, fieldDescriptor string) *Object {
+	field := receiver.getField(fieldName, fieldDescriptor, true)
+	return receiver.staticVars.GetRef(field.slotId)
+}
+func (receiver *Class) SetRefVar(fieldName, fieldDescriptor string, ref *Object) {
+	field := receiver.getField(fieldName, fieldDescriptor, true)
+	receiver.staticVars.SetRef(field.slotId, ref)
 }

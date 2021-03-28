@@ -26,6 +26,7 @@ func newJVM(cmd *Cmd) *JVM {
 }
 
 func (receiver *JVM) start() {
+	receiver.initSystem()
 	receiver.initVM()
 	receiver.execMain()
 }
@@ -33,6 +34,12 @@ func (receiver *JVM) start() {
 func (receiver *JVM) initVM() {
 	vmClass := receiver.classLoader.LoadClass("sun/misc/VM")
 	base.InitClass(receiver.mainThread, vmClass)
+	interpret(receiver.mainThread, receiver.cmd.verboseInstFlag)
+}
+
+func (receiver *JVM) initSystem() {
+	systemClass := receiver.classLoader.LoadClass("java/lang/System")
+	base.InitClass(receiver.mainThread, systemClass)
 	interpret(receiver.mainThread, receiver.cmd.verboseInstFlag)
 }
 

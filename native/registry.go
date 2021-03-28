@@ -20,11 +20,7 @@ func FindNativeMethod(className, methodName, methodDescriptor string) NativeMeth
 		return method
 	}
 	if methodDescriptor == "()V" && methodName == "registerNatives" {
-		if className == "java/lang/System" {
-			return initSystem
-		} else {
-			return emptyNativeMethod
-		}
+		return emptyNativeMethod
 	}
 	return nil
 }

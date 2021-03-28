@@ -20,6 +20,9 @@ func (receiver *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 	}
 
 	ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1)
+	if methodRef.Name() == "println" {
+		print("invoke println!\n")
+	}
 	if ref == nil {
 		// hack!
 		//if methodRef.Name() == "println" {

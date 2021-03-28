@@ -24,4 +24,10 @@ func initialize(frame *rtda.Frame) {
 	setPropMethod := propsClass.GetInstanceMethod("setProperty",
 		"(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;")
 	base.InvokeMethod(frame, setPropMethod)
+
+	systemClass := vmClass.Loader().LoadClass("java/lang/System")
+	setOut0Method := systemClass.GetStaticMethod("setOut0", "(Ljava/io/PrintStream;)V")
+	fileOutputStreamClass := systemClass.Loader().LoadClass("java/io/PrintStream")
+	frame.OperandStack().PushRef(fileOutputStreamClass.NewObject())
+	base.InvokeMethod(frame, setOut0Method)
 }

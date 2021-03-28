@@ -6,10 +6,9 @@ import (
 	"jvmgo/rtda/heap"
 )
 
-const jlSystem = "java/lang/System"
-
 func init() {
-	native.Register(jlSystem, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy)
+	native.Register("java/lang/System", "arraycopy",
+		"(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy)
 }
 
 // public static native void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)

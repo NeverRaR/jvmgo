@@ -20,20 +20,30 @@ type ExceptionTableEntry struct {
 	catchType uint16
 }
 
-func (e ExceptionTableEntry) CatchType() uint16 {
-	return e.catchType
+func (receiver ExceptionTableEntry) CatchType() uint16 {
+	return receiver.catchType
 }
 
-func (e ExceptionTableEntry) HandlerPc() uint16 {
-	return e.handlerPc
+func (receiver ExceptionTableEntry) HandlerPc() uint16 {
+	return receiver.handlerPc
 }
 
-func (e ExceptionTableEntry) EndPc() uint16 {
-	return e.endPc
+func (receiver ExceptionTableEntry) EndPc() uint16 {
+	return receiver.endPc
 }
 
-func (e ExceptionTableEntry) StartPc() uint16 {
-	return e.startPc
+func (receiver ExceptionTableEntry) StartPc() uint16 {
+	return receiver.startPc
+}
+
+func (receiver *CodeAttribute) LineNumberTableAttribute() *LineNumberTableAttribute {
+	for _, attrInfo := range receiver.attributes {
+		switch attrInfo.(type) {
+		case *LineNumberTableAttribute:
+			return attrInfo.(*LineNumberTableAttribute)
+		}
+	}
+	return nil
 }
 
 func (receiver *CodeAttribute) readInfo(reader *ClassReader) {

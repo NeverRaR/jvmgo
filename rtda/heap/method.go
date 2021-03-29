@@ -4,11 +4,22 @@ import "jvmgo/classfile"
 
 type Method struct {
 	ClassMember
-	maxStack       uint
-	maxLocal       uint
-	code           []byte
-	argSlotCount   uint
-	exceptionTable ExceptionTable
+	maxStack        uint
+	maxLocal        uint
+	code            []byte
+	argSlotCount    uint
+	exceptionTable  ExceptionTable
+	lineNumberTable *classfile.LineNumberTableAttribute
+}
+
+func (receiver *Method) GetLineNumber(pc int) int {
+	if receiver.IsNative() {
+		return -2
+	}
+	if receiver.lineNumberTable == nil {
+		return -1
+	}
+	return receiver.lineNumberTable.GetLineNumber(pc)
 }
 
 func (receiver *Method) ArgSlotCount() uint {
@@ -87,6 +98,7 @@ func (receiver *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		receiver.code = codeAttr.Code()
 		receiver.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(),
 			receiver.class.constantPool)
+		receiver.lineNumberTable = codeAttr.LineNumberTableAttribute()
 	}
 }
 

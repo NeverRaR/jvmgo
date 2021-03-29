@@ -51,3 +51,9 @@ func (receiver *Stack) getFrames() []*Frame {
 	}
 	return frames
 }
+
+func (receiver *Stack) clear() {
+	for !receiver.isEmpty() {
+		receiver.pop()
+	}
+}

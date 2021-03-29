@@ -9,11 +9,31 @@ type CodeAttribute struct {
 	attributes     []AttributeInfo
 }
 
+func (receiver *CodeAttribute) ExceptionTable() []*ExceptionTableEntry {
+	return receiver.exceptionTable
+}
+
 type ExceptionTableEntry struct {
 	startPc   uint16
 	endPc     uint16
 	handlerPc uint16
 	catchType uint16
+}
+
+func (e ExceptionTableEntry) CatchType() uint16 {
+	return e.catchType
+}
+
+func (e ExceptionTableEntry) HandlerPc() uint16 {
+	return e.handlerPc
+}
+
+func (e ExceptionTableEntry) EndPc() uint16 {
+	return e.endPc
+}
+
+func (e ExceptionTableEntry) StartPc() uint16 {
+	return e.startPc
 }
 
 func (receiver *CodeAttribute) readInfo(reader *ClassReader) {

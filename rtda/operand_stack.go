@@ -93,3 +93,10 @@ func (receiver *OperandStack) PopBoolean() bool {
 func NewOperandStack(maxStack uint) *OperandStack {
 	return newOperandStack(maxStack)
 }
+
+func (receiver *OperandStack) Clear() {
+	receiver.size = 0
+	for i := range receiver.slots {
+		receiver.slots[i].ref = nil
+	}
+}

@@ -44,3 +44,7 @@ func (receiver *Thread) NewFrame(method *heap.Method) *Frame {
 func (receiver *Thread) IsStackEmpty() bool {
 	return receiver.stack.isEmpty()
 }
+
+func (receiver *Thread) ClearStack() {
+	receiver.stack.clear()
+}

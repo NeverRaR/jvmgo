@@ -4,10 +4,11 @@ import "jvmgo/classfile"
 
 type Method struct {
 	ClassMember
-	maxStack     uint
-	maxLocal     uint
-	code         []byte
-	argSlotCount uint
+	maxStack       uint
+	maxLocal       uint
+	code           []byte
+	argSlotCount   uint
+	exceptionTable ExceptionTable
 }
 
 func (receiver *Method) ArgSlotCount() uint {
@@ -84,7 +85,17 @@ func (receiver *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		receiver.maxStack = codeAttr.MaxStack()
 		receiver.maxLocal = codeAttr.MaxLocals()
 		receiver.code = codeAttr.Code()
+		receiver.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(),
+			receiver.class.constantPool)
 	}
+}
+
+func (receiver *Method) FindExceptionHandler(exClass *Class, pc int) int {
+	handler := receiver.exceptionTable.findExceptionHandler(exClass, pc)
+	if handler != nil {
+		return handler.handlerPc
+	}
+	return -1
 }
 
 func (receiver *Method) IsSynchronized() bool {

@@ -22,8 +22,7 @@ func init() {
 		"(Z)[Ljava/lang/reflect/Field;", getDeclaredFields0)
 	native.Register("java/lang/Class", "forName0",
 		"(Ljava/lang/String;ZLjava/lang/ClassLoader;Ljava/lang/Class;)Ljava/lang/Class;", forName0)
-	//native.Register("java/lang/Class", "getDeclaredConstructors0",
-	//"(Z)[Ljava/lang/reflect/Constructor;", getDeclaredConstructors0)
+	//native.Register("java/lang/Class", "getDeclaredConstructors0", "(Z)[Ljava/lang/reflect/Constructor;", getDeclaredConstructors0)
 	native.Register("java/lang/Class", "getModifiers",
 		"()I", getModifiers)
 	native.Register("java/lang/Class", "getSuperclass",
@@ -32,8 +31,7 @@ func init() {
 		"()[Ljava/lang/Class;", getInterfaces0)
 	native.Register("java/lang/Class", "isArray",
 		"()Z", isArray)
-	//native.Register("java/lang/Class", "getDeclaredMethods0",
-	//"(Z)[Ljava/lang/reflect/Method;", getDeclaredMethods0)
+	//native.Register("java/lang/Class", "getDeclaredMethods0", "(Z)[Ljava/lang/reflect/Method;", getDeclaredMethods0)
 	native.Register("java/lang/Class", "getComponentType",
 		"()Ljava/lang/Class;", getComponentType)
 	native.Register("java/lang/Class", "isAssignableFrom",

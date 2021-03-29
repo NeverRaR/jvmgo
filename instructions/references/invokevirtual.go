@@ -31,10 +31,10 @@ func (receiver *INVOKE_VIRTUAL) Execute(frame *rtda.Frame) {
 		panic("java.lang.NullPointerException")
 	}
 
-	if methodRef.Name() == "println" {
-		_println(frame.OperandStack(), methodRef.Descriptor())
-		return
-	}
+	//if methodRef.Name() == "println" {
+	//	_println(frame.OperandStack(), methodRef.Descriptor())
+	//	return
+	//}
 	if resolvedMethod.IsProtected() &&
 		resolvedMethod.Class().IsSuperClassOf(currentClass) &&
 		resolvedMethod.Class().GetPackageName() != currentClass.GetPackageName() &&

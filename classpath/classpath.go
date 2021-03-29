@@ -51,7 +51,7 @@ func exists(path string) bool {
 
 func (receiver *Classpath) parseUserClasspath(cpOption string) {
 	if cpOption == "" {
-		if cp := os.Getenv("CLASS_PATH"); cp != "" {
+		if cp := os.Getenv("CLASSPATH"); cp != "" {
 			cpOption = cp
 		} else {
 			cpOption = "."

@@ -1,7 +1,7 @@
 package lang
 
 import (
-	"jvmgo/classfile"
+	"fmt"
 	"jvmgo/native"
 	"jvmgo/rtda"
 	"jvmgo/rtda/heap"
@@ -12,6 +12,11 @@ type StackTraceElement struct {
 	className  string
 	methodName string
 	lineNumber int
+}
+
+func (receiver *StackTraceElement) String() string {
+	return fmt.Sprintf("%s.%s(%s:%d)",
+		receiver.className, receiver.methodName, receiver.fileName, receiver.lineNumber)
 }
 
 func init() {

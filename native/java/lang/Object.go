@@ -10,6 +10,7 @@ func init() {
 	native.Register("java/lang/Object", "getClass", "()Ljava/lang/Class;", getClass)
 	native.Register("java/lang/Object", "hashCode", "()I", hashCode)
 	native.Register("java/lang/Object", "clone", "()Ljava/lang/Object;", clone)
+	native.Register("java/lang/Object", "notifyAll", "()V", notifyAll)
 
 }
 
@@ -34,4 +35,10 @@ func clone(frame *rtda.Frame) {
 		panic("java.lang.CloneNotSupportedException")
 	}
 	frame.OperandStack().PushRef(this.Clone())
+}
+
+// public final native void notifyAll();
+// ()V
+func notifyAll(frame *rtda.Frame) {
+	// todo
 }

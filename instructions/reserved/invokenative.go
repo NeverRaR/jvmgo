@@ -11,6 +11,7 @@ import _ "jvmgo/native/sun/misc"
 import _ "jvmgo/native/sun/reflect"
 import _ "jvmgo/native/java/security"
 import _ "jvmgo/native/java/io"
+import _ "jvmgo/native/sun/io"
 
 type INVOKE_NATIVE struct {
 	base.NoOperandsInstruction

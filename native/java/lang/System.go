@@ -6,6 +6,7 @@ import (
 	"jvmgo/rtda"
 	"jvmgo/rtda/heap"
 	"runtime"
+	"time"
 )
 
 func init() {
@@ -14,6 +15,11 @@ func init() {
 	native.Register("java/lang/System", "initProperties",
 		"(Ljava/util/Properties;)Ljava/util/Properties;", initProperties)
 	native.Register("java/lang/System", "setOut0", "(Ljava/io/PrintStream;)V", setOut0)
+	native.Register("java/lang/System", "setIn0", "(Ljava/io/InputStream;)V", setIn0)
+	native.Register("java/lang/System", "setErr0", "(Ljava/io/PrintStream;)V", setErr0)
+	native.Register("java/lang/System", "currentTimeMillis", "()J", currentTimeMillis)
+	native.Register("java/lang/System", "mapLibraryName",
+		"(Ljava/lang/String;)Ljava/lang/String;", mapLibraryName)
 }
 
 // public static native void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
@@ -113,4 +119,40 @@ func setOut0(frame *rtda.Frame) {
 	out := vars.GetRef(0)
 	sysClass := frame.Method().Class()
 	sysClass.SetRefVar("out", "Ljava/io/PrintStream;", out)
+}
+
+// private static native void setIn0(InputStream in);
+// (Ljava/io/InputStream;)V
+func setIn0(frame *rtda.Frame) {
+	vars := frame.LocalVars()
+	in := vars.GetRef(0)
+
+	sysClass := frame.Method().Class()
+	sysClass.SetRefVar("in", "Ljava/io/InputStream;", in)
+}
+
+// private static native void setErr0(PrintStream err);
+// (Ljava/io/PrintStream;)V
+func setErr0(frame *rtda.Frame) {
+	vars := frame.LocalVars()
+	err := vars.GetRef(0)
+
+	sysClass := frame.Method().Class()
+	sysClass.SetRefVar("err", "Ljava/io/PrintStream;", err)
+}
+
+// public static native long currentTimeMillis();
+// ()J
+func currentTimeMillis(frame *rtda.Frame) {
+	millis := time.Now().UnixNano() / int64(time.Millisecond)
+	stack := frame.OperandStack()
+	stack.PushLong(millis)
+}
+
+func mapLibraryName(frame *rtda.Frame) {
+	curClass := frame.Method().Class()
+	vars := frame.LocalVars()
+	libname := vars.GetRef(0)
+	goName := heap.GoString(libname)
+	frame.OperandStack().PushRef(heap.JString(curClass.Loader(), goName+".dll"))
 }

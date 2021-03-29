@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	native.Register("sun/misc/VM", "initialize", "()V", initialize0)
+	native.Register("sun/misc/VM", "initialize", "()V", initialize)
 }
 
 func initialize(frame *rtda.Frame) {

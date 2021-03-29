@@ -17,6 +17,10 @@ func (receiver *INVOKE_STATIC) Execute(frame *rtda.Frame) {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
 
+	if resolvedMethod.Class().Name() == "java/lang/System" && resolvedMethod.Name() == "loadLibrary" {
+		return
+	}
+
 	class := resolvedMethod.Class()
 	if !class.InitStarted() {
 		frame.RevertNextPC()

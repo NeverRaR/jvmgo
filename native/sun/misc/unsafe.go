@@ -2,7 +2,6 @@ package misc
 
 import (
 	"encoding/binary"
-	"fmt"
 	"jvmgo/native"
 	"jvmgo/rtda"
 	"jvmgo/rtda/heap"
@@ -268,8 +267,6 @@ func freeMemory(frame *rtda.Frame) {
 // (J)B
 func mem_getByte(frame *rtda.Frame) {
 	stack, mem := _get(frame)
-	k := int32(Int8(mem))
-	fmt.Print(k)
 	stack.PushInt(int32(Int8(mem)))
 }
 

@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	"jvmgo/rtda"
 	"jvmgo/rtda/heap"
 )
@@ -14,9 +13,6 @@ func InitClass(thread *rtda.Thread, class *heap.Class) {
 
 func scheduleClinit(thread *rtda.Thread, class *heap.Class) {
 	clinit := class.GetClinitMethod()
-	if class.Name() == "java/lang/System" {
-		fmt.Print("System init!\n")
-	}
 	if clinit != nil {
 		// exec <clinit>
 		newFrame := thread.NewFrame(clinit)

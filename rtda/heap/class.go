@@ -240,3 +240,15 @@ func (receiver *Class) GetConstructors(publicOnly bool) []*Method {
 	}
 	return constructors
 }
+
+func (receiver *Class) GetMethods(publicOnly bool) []*Method {
+	methods := make([]*Method, 0, len(receiver.methods))
+	for _, method := range receiver.methods {
+		if !method.isClinit() && !method.isConstructor() {
+			if !publicOnly || method.IsPublic() {
+				methods = append(methods, method)
+			}
+		}
+	}
+	return methods
+}

@@ -161,6 +161,10 @@ func (receiver *Method) isConstructor() bool {
 	return !receiver.IsStatic() && receiver.name == "<init>"
 }
 
+func (receiver *Method) isClinit() bool {
+	return receiver.IsStatic() && receiver.name == "<clinit>"
+}
+
 // reflection
 func (receiver *Method) ParameterTypes() []*Class {
 	if receiver.argSlotCount == 0 {

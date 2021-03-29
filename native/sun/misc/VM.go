@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	native.Register("sun/misc/VM", "initialize", "()V", initialize0)
+	native.Register("sun/misc/VM", "initialize", "()V", initialize)
 }
 
 func initialize(frame *rtda.Frame) {
@@ -21,7 +21,7 @@ func initialize(frame *rtda.Frame) {
 // private static native void initialize();
 
 func initialize0(frame *rtda.Frame) {
-	//init savedProps
+
 	thread := frame.Thread()
 	vmClass := frame.Method().Class()
 	systemClass := vmClass.Loader().LoadClass("java/lang/System")
@@ -56,21 +56,5 @@ func initialize0(frame *rtda.Frame) {
 	shimFrame = rtda.NewShimFrame(thread, ops)
 	base.InvokeMethod(shimFrame, propsConstructor)
 	systemClass.SetRefVar("props", "Ljava/util/Properties;", props)
-
-	setOut0Method := systemClass.GetStaticMethod("setOut0", "(Ljava/io/PrintStream;)V")
-	printStreamClass := systemClass.Loader().LoadClass("java/io/PrintStream")
-	frame.OperandStack().PushRef(printStreamClass.NewObject())
-	base.InvokeMethod(frame, setOut0Method)
-	//systemClass := vmClass.Loader().LoadClass("java/lang/System")
-	//setOut0Method := systemClass.GetStaticMethod("setOut0", "(Ljava/io/PrintStream;)V")
-	//newPrintStreamMethod := systemClass.GetStaticMethod("newPrintStream",
-	//"(Ljava/io/FileOutputStream;Ljava/lang/String;)Ljava/io/PrintStream;")
-	//fileOutputStreamClass := systemClass.Loader().LoadClass("java/io/FileOutputStream")
-	//thread := frame.Thread()
-	//newFrame := thread.NewFrame(setOut0Method)
-	//thread.PushFrame(newFrame)
-	//newFrame.OperandStack().PushRef(fileOutputStreamClass.NewObject())
-	//newFrame.OperandStack().PushRef(nil)
-	//base.InvokeMethod(newFrame, newPrintStreamMethod)
 
 }

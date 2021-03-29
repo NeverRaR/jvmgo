@@ -58,3 +58,36 @@ func (receiver *MemberInfo) ConstantValueAttribute() *ConstantValueAttribute {
 	}
 	return nil
 }
+
+func (receiver *MemberInfo) ExceptionsAttribute() *ExceptionsAttribute {
+	for _, attrInfo := range receiver.attributes {
+		switch attrInfo.(type) {
+		case *ExceptionsAttribute:
+			return attrInfo.(*ExceptionsAttribute)
+		}
+	}
+	return nil
+}
+
+func (receiver *MemberInfo) RuntimeVisibleAnnotationsAttributeData() []byte {
+	return receiver.getUnparsedAttributeData("RuntimeVisibleAnnotations")
+}
+func (receiver *MemberInfo) RuntimeVisibleParameterAnnotationsAttributeData() []byte {
+	return receiver.getUnparsedAttributeData("RuntimeVisibleParameterAnnotationsAttribute")
+}
+func (receiver *MemberInfo) AnnotationDefaultAttributeData() []byte {
+	return receiver.getUnparsedAttributeData("AnnotationDefault")
+}
+
+func (receiver *MemberInfo) getUnparsedAttributeData(name string) []byte {
+	for _, attrInfo := range receiver.attributes {
+		switch attrInfo.(type) {
+		case *UnparsedAttribute:
+			unparsedAttr := attrInfo.(*UnparsedAttribute)
+			if unparsedAttr.name == name {
+				return unparsedAttr.info
+			}
+		}
+	}
+	return nil
+}

@@ -4,12 +4,36 @@ import "jvmgo/classfile"
 
 type Method struct {
 	ClassMember
-	maxStack        uint
-	maxLocal        uint
-	code            []byte
-	argSlotCount    uint
-	exceptionTable  ExceptionTable
-	lineNumberTable *classfile.LineNumberTableAttribute
+	maxStack                uint
+	maxLocal                uint
+	code                    []byte
+	argSlotCount            uint
+	exceptionTable          ExceptionTable
+	exceptions              *classfile.ExceptionsAttribute // todo: rename
+	parameterAnnotationData []byte                         // RuntimeVisibleParameterAnnotations_attribute
+	annotationDefaultData   []byte                         // AnnotationDefault_attribute
+	parsedDescriptor        *MethodDescriptor
+	lineNumberTable         *classfile.LineNumberTableAttribute
+}
+
+func (receiver *Method) LineNumberTable() *classfile.LineNumberTableAttribute {
+	return receiver.lineNumberTable
+}
+
+func (receiver *Method) ParsedDescriptor() *MethodDescriptor {
+	return receiver.parsedDescriptor
+}
+
+func (receiver *Method) AnnotationDefaultData() []byte {
+	return receiver.annotationDefaultData
+}
+
+func (receiver *Method) ParameterAnnotationData() []byte {
+	return receiver.parameterAnnotationData
+}
+
+func (receiver *Method) Exceptions() *classfile.ExceptionsAttribute {
+	return receiver.exceptions
 }
 
 func (receiver *Method) GetLineNumber(pc int) int {
@@ -52,6 +76,7 @@ func newMethod(class *Class, cfMethod *classfile.MemberInfo) *Method {
 	method.copyMemberInfo(cfMethod)
 	method.copyAttributes(cfMethod)
 	md := parseMethodDescriptor(method.descriptor)
+	method.parsedDescriptor = md
 	method.calcArgSlotCount(md.parameterTypes)
 	if method.IsNative() {
 		method.injectCodeAttribute(md.returnType)
@@ -100,6 +125,10 @@ func (receiver *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 			receiver.class.constantPool)
 		receiver.lineNumberTable = codeAttr.LineNumberTableAttribute()
 	}
+	receiver.exceptions = cfMethod.ExceptionsAttribute()
+	receiver.annotationData = cfMethod.RuntimeVisibleAnnotationsAttributeData()
+	receiver.parameterAnnotationData = cfMethod.RuntimeVisibleParameterAnnotationsAttributeData()
+	receiver.annotationDefaultData = cfMethod.AnnotationDefaultAttributeData()
 }
 
 func (receiver *Method) FindExceptionHandler(exClass *Class, pc int) int {
@@ -130,4 +159,41 @@ func (receiver *Method) IsStrict() bool {
 }
 func (receiver *Method) isConstructor() bool {
 	return !receiver.IsStatic() && receiver.name == "<init>"
+}
+
+// reflection
+func (receiver *Method) ParameterTypes() []*Class {
+	if receiver.argSlotCount == 0 {
+		return nil
+	}
+
+	paramTypes := receiver.parsedDescriptor.parameterTypes
+	paramClasses := make([]*Class, len(paramTypes))
+	for i, paramType := range paramTypes {
+		paramClassName := toClassName(paramType)
+		paramClasses[i] = receiver.class.loader.LoadClass(paramClassName)
+	}
+
+	return paramClasses
+}
+func (receiver *Method) ReturnType() *Class {
+	returnType := receiver.parsedDescriptor.returnType
+	returnClassName := toClassName(returnType)
+	return receiver.class.loader.LoadClass(returnClassName)
+}
+func (receiver *Method) ExceptionTypes() []*Class {
+	if receiver.exceptions == nil {
+		return nil
+	}
+
+	exIndexTable := receiver.exceptions.ExceptionIndexTable()
+	exClasses := make([]*Class, len(exIndexTable))
+	cp := receiver.class.constantPool
+
+	for i, exIndex := range exIndexTable {
+		classRef := cp.GetConstant(uint(exIndex)).(*ClassRef)
+		exClasses[i] = classRef.ResolvedClass()
+	}
+
+	return exClasses
 }

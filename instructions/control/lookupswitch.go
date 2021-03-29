@@ -12,6 +12,7 @@ type LOOKUP_SWITCH struct {
 func (receiver *LOOKUP_SWITCH) FetchOperands(reader *base.BytecodeReader) {
 	reader.SkipPadding()
 	receiver.defaultOffset = reader.ReadInt32()
+	receiver.npairs = reader.ReadInt32()
 	receiver.matchOffsets = reader.ReadInt32s(receiver.npairs * 2)
 }
 

@@ -89,17 +89,17 @@ func (receiver *Method) injectCodeAttribute(returnType string) {
 	receiver.maxLocal = receiver.argSlotCount
 	switch returnType[0] {
 	case 'V':
-		receiver.code = []byte{0xfe, 0xb1} //return
-	case 'D':
-		receiver.code = []byte{0xfe, 0xaf} //dreturn
-	case 'F':
-		receiver.code = []byte{0xfe, 0xae} //freturn
-	case 'J':
-		receiver.code = []byte{0xfe, 0xad} //lreturn
+		receiver.code = []byte{0xfe, 0xb1} // return
 	case 'L', '[':
-		receiver.code = []byte{0xfe, 0xb0} //areturn
+		receiver.code = []byte{0xfe, 0xb0} // areturn
+	case 'D':
+		receiver.code = []byte{0xfe, 0xaf} // dreturn
+	case 'F':
+		receiver.code = []byte{0xfe, 0xae} // freturn
+	case 'J':
+		receiver.code = []byte{0xfe, 0xad} // lreturn
 	default:
-		receiver.code = []byte{0xfe, 0xac} //ireturn
+		receiver.code = []byte{0xfe, 0xac} // ireturn
 
 	}
 }

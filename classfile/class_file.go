@@ -108,3 +108,13 @@ func (receiver *ClassFile) InterfaceNames() []string {
 	}
 	return interfacesName
 }
+
+func (receiver *ClassFile) SourceFileAttribute() *SourceFileAttribute {
+	for _, attrInfo := range receiver.attributes {
+		switch attrInfo.(type) {
+		case *SourceFileAttribute:
+			return attrInfo.(*SourceFileAttribute)
+		}
+	}
+	return nil
+}

@@ -16,11 +16,16 @@ type Class struct {
 	loader            *ClassLoader
 	superClass        *Class
 	interfaces        []*Class
+	sourceFile        string
 	instanceSlotCount uint
 	staticSlotCount   uint
 	staticVars        Slots
 	initStarted       bool
 	jClass            *Object
+}
+
+func (receiver *Class) SourceFile() string {
+	return receiver.sourceFile
 }
 
 func (receiver *Class) Interfaces() []*Class {
@@ -48,7 +53,15 @@ func newClass(cf *classfile.ClassFile) *Class {
 	class.constantPool = newConstantPool(class, cf.ConstantPool())
 	class.fields = newFields(class, cf.Fields())
 	class.methods = newMethods(class, cf.Methods())
+	class.sourceFile = getSourceFile(cf)
 	return class
+}
+
+func getSourceFile(cf *classfile.ClassFile) string {
+	if sfAttr := cf.SourceFileAttribute(); sfAttr != nil {
+		return sfAttr.FileName()
+	}
+	return "Unknown"
 }
 
 func (receiver *Class) IsPublic() bool {
